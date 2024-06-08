@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { fetchCategories } from '../services/api';
+import ProductSearch from './ProductSearch';
 
 const ProductList = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
     const getCategories = async () => {
@@ -26,22 +29,39 @@ const ProductList = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div>
+    <div className="product-list">
+      <ProductSearch
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        setSearchResults={setSearchResults}
+      />
       <h2>Categories with Products</h2>
-      {categories.map(category => (
-        <div key={category.id}>
-          <h3>{category.name}</h3>
-          <ul>
-            {category.products.map(product => (
-              <li key={product.id}>
-                <h3>{product.title}</h3>
-                <p>{product.description}</p>
-                <p>Price: {product.price}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+      {searchTerm ? (
+        searchResults.map(product => (
+          <div key={product.id} className="product-card">
+            <img src={product.image_url} alt={product.title} style={{ width: '100px', height: 'auto' }} />
+            <h3>{product.title}</h3>
+            <p>{product.description}</p>
+            <p>Price: {product.price}</p>
+          </div>
+        ))
+      ) : (
+        categories.map(category => (
+          <div key={category.id} className="category-card">
+            <h3>{category.name}</h3>
+            <div className="products-container">
+              {category.products.map(product => (
+                <div key={product.id} className="product-card">
+                  <img src={product.image_url} alt={product.title} style={{ width: '100px', height: 'auto' }} />
+                  <h4>{product.title}</h4>
+                  <p>{product.description}</p>
+                  <p>Price: {product.price}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))
+      )}
     </div>
   );
 };

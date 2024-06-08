@@ -2,14 +2,14 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:3000'; // Replace with your API URL
 
-// export const fetchProducts = async () => {
-//   try {
-//     const response = await axios.get(`${API_URL}/products`);
-//     return response.data;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
+export const fetchProducts = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/products`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const fetchProductSubmission = async (url) => {
   try {
@@ -23,6 +23,15 @@ export const fetchProductSubmission = async (url) => {
 export const fetchCategories = async () => {
   try {
     const response = await axios.get(`${API_URL}/categories`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const searchProducts = async (searchTerm) => {
+  try {
+    const response = await axios.get(`${API_URL}/products/search?query=${searchTerm}`);
     return response.data;
   } catch (error) {
     throw error;
